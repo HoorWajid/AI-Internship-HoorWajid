@@ -5,7 +5,7 @@ This project performs an end-to-end exploratory data analysis (EDA) on a
 40,000-record simulated network attack log using Pandas, NumPy,
 Matplotlib, and SciPy (for statistical significance testing). It
 loads the raw log, cleans missing values, generates summary statistics, and
-tests — rather than just visualizes — whether the fields in the dataset are
+tests — rather than just visualizes whether the fields in the dataset are
 actually related to one another.
 
 ## 2. Dataset
@@ -53,26 +53,26 @@ b) Duplicate records. Checked with df.duplicated() before dropping —
 c) Timestamp validity. Parsed with pd.to_datetime(df["Timestamp"]).
 Note: this call has no errors="coerce" argument, so a genuinely
 unparseable timestamp would raise an exception and stop the pipeline
-rather than silently becoming NaT — in this dataset all 40,000
+rather than silently becoming NaT.In this dataset all 40,000
 timestamps parsed cleanly, so the distinction didn't surface, but it's
 worth knowing for anyone reusing this function on a messier log file.
 Valid timestamps were then split into Year, Month, Hour, DayOfWeek.
 
 d) Categorical text standardization. Every text/object column was
 stripped of stray leading/trailing whitespace (a common artifact of
-different logging sources writing to the same field). City and State
-— the two fields derived from free-form Geo-location Data — were also
+different logging sources writing to the same field). City and State,
+these two fields derived from free-form Geo-location Data were also
 title-cased for consistent display, since they're split out of raw text
 rather than arriving as clean pre-set categories.
 
 e) Port range validation. Source Port and Destination Port were
 checked against the physically valid 0–65535 range; any row failing the
 check would be dropped outright (treated as a corrupted log entry, not
-recoverable/imputable data). All 40,000 rows passed — zero rows dropped.
+recoverable/imputable data). All 40,000 rows passed, zero rows dropped.
 
 f) Negative-value check. Packet Length and Anomaly Scores can't
 legitimately be negative, so any row with a negative value in either
-column would be dropped. All rows passed — zero rows dropped.
+column would be dropped. All rows passed ,zero rows dropped.
 
 g) Feature engineering. Geo-location Data was split into City /
 State; Source Port / Destination Port were bucketed into standard
@@ -96,14 +96,14 @@ rows × 27 columns.
 - Chi-square tests of independence between key categorical pairs
   (Attack Type ↔ Severity, Severity ↔ Action Taken, Attack Type ↔ Malware
   Indicator) to check whether visually-different category counts represent
-  a real statistical relationship or just natural sampling noise —
+  a real statistical relationship or just natural sampling noise,
   visualized as annotated heatmaps rather than grouped bar charts, so the
   exact count/percentage and the p-value sit in one figure.
 - Time-pattern analysis: attack volume by hour of day and by year (line
   charts, since these are trends over an ordered axis).
 - Anomaly score distribution compared across attack types (KDE plot) and
   across severity levels (boxplot, to show median/quartile spread directly).
-- Geographic breakdown: top 10 states by attack count (horizontal bar —
+- Geographic breakdown: top 10 states by attack count (horizontal bar,
   the one place a bar chart is the right tool, since it's a ranking).
 - Correlation heatmap across numeric features (ports, packet length,
   anomaly score).
@@ -127,32 +127,32 @@ Supporting evidence:
    ~33.6% DDoS / 33.3% Malware / 33.2% Intrusion; Severity splits ~33.6%
    Medium / 33.5% High / 33.0% Low; Action Taken splits ~33.8% Blocked /
    33.2% Ignored / 33.0% Logged. Real-world attack logs are almost never
-   this evenly split — this pattern is the signature of randomly/
+   this evenly split, this pattern is the signature of randomly/
    synthetically generated data rather than organically captured
    telemetry.
 2. High-severity attacks are just as likely to be Ignored as low-severity
    ones (chi-square p = 0.49). In a real security operations pipeline
-   this would be alarming — it would mean incident response isn't
-   risk-prioritized — but combined with finding #1, the more accurate
+   this would be alarming, it would mean incident response isn't
+   risk-prioritized, but combined with finding #1, the more accurate
    read is that severity and response were assigned independently in this
    dataset.
 3. The "Malware Indicators" flag is unrelated to the actual Attack Type
-   (chi-square p = 0.45) — an IoC is flagged in ~50% of DDoS attacks and
+   (chi-square p = 0.45), an IoC is flagged in ~50% of DDoS attacks and
    ~50% of Malware attacks alike, so it cannot be used as a real detector
    of malware activity here.
-4. Anomaly Scores do not differ meaningfully by attack type or severity
-   — mean scores cluster tightly around 50 (range ~49.8–50.3) with nearly
+4. Anomaly Scores do not differ meaningfully by attack type or severity,
+   mean scores cluster tightly around 50 (range ~49.8–50.3) with nearly
    identical spread (std ≈ 28.8–28.9) across all groups, so the anomaly
    score in this dataset carries no discriminative signal for triage.
-5. No time-based attack pattern exists. Attack volume is flat across
+6. No time-based attack pattern exists. Attack volume is flat across
    all 24 hours (±3% of the mean) and across all 7 days of the week,
    unlike real-world attack telemetry which usually shows clustering
    around business hours or automated bot schedules.
-6. Geographic spread is broad and even across 28 Indian states with no
+7. Geographic spread is broad and even across 28 Indian states with no
    dominant hotspot (top state accounts for only ~3.7% of events).
 
 What this means for anyone using this dataset: it is well-suited for
-practicing data cleaning, dashboarding, and pipeline-building — but it
+practicing data cleaning, dashboarding, and pipeline-building but it
 cannot be used as-is to train a model that predicts severity, response
 action, or attack type from other fields, because those relationships do
 not exist in the data. Anyone building a "smart" alert-prioritization or
@@ -190,11 +190,7 @@ charts/.
 
 ## 8. Uploading to GitHub
 ```bash
-cd cyberattack_project
-git init
-git add .
-git commit -m "Cybersecurity attacks EDA mini project"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<repo-name>.git
-git push -u origin main
+git add Task_4
+git commit -m "Added Task 04, containg mini project for data analysis using numpy and pandas."
+git push 
 ```
